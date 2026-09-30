@@ -1,0 +1,12 @@
+[package]
+name = "falcon-det-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[dev-dependencies]
+rand = "0.9"
+
+[build-dependencies]
+cc = "1.5.1"
