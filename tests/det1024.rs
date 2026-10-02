@@ -3,8 +3,8 @@
 #[path = "kats/det1024.rs"]
 mod kats;
 
-use falcon_det_rs::det1024::*;
-use falcon_det_rs::ErrorKind;
+use falcon_det::det1024::*;
+use falcon_det::ErrorKind;
 use rand::{Rng, RngCore};
 use sha3::Shake256;
 use sha3::digest::{ExtendableOutput, Update, XofReader};

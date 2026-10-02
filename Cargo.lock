@@ -57,7 +57,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "falcon-det-rs"
+name = "falcon-det"
 version = "0.1.0"
 dependencies = [
  "cc",
