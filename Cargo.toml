@@ -4,9 +4,11 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+zeroize = "1"
 
 [dev-dependencies]
 rand = "0.9"
+sha3 = "0.10"
 
 [build-dependencies]
 cc = "1.5.1"

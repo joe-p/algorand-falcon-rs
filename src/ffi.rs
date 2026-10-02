@@ -1,5 +1,5 @@
 //! Raw FFI declarations for the FALCON-DET1024 C API (falcon/deterministic.h)
-//! and the SHAKE256 helpers it depends on (falcon/falcon.h).
+//! and the SHAKE256 seeding helper it depends on (falcon/falcon.h).
 
 use core::ffi::{c_int, c_void};
 
@@ -10,10 +10,6 @@ pub struct Shake256Context {
 }
 
 unsafe extern "C" {
-    pub fn shake256_init(sc: *mut Shake256Context);
-    pub fn shake256_inject(sc: *mut Shake256Context, data: *const c_void, len: usize);
-    pub fn shake256_flip(sc: *mut Shake256Context);
-    pub fn shake256_extract(sc: *mut Shake256Context, out: *mut c_void, len: usize);
     pub fn shake256_init_prng_from_seed(
         sc: *mut Shake256Context,
         seed: *const c_void,

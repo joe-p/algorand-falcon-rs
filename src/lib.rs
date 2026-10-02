@@ -10,7 +10,7 @@ use core::fmt;
 use core::ptr;
 
 pub mod det1024;
-pub mod ffi;
+mod ffi;
 
 /// The operation that failed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

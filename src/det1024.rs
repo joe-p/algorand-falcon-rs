@@ -3,6 +3,8 @@
 use core::fmt;
 use core::ops::Deref;
 
+use zeroize::{Zeroize, ZeroizeOnDrop};
+
 use crate::{Error, ErrorKind, check, ffi, raw};
 
 /// log2 of the degree of Falcon det1024 polynomials.
@@ -26,7 +28,7 @@ pub const N: usize = 1 << LOGN;
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
 pub struct PublicKey(pub [u8; PUBLIC_KEY_SIZE]);
 
-/// A Falcon private key.
+/// A Falcon private key. Its bytes are zeroized when it is dropped.
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct PrivateKey(pub [u8; PRIVATE_KEY_SIZE]);
 
@@ -57,6 +59,14 @@ impl Default for CTSignature {
         CTSignature([0; CT_SIGNATURE_SIZE])
     }
 }
+
+impl Drop for PrivateKey {
+    fn drop(&mut self) {
+        self.0.zeroize();
+    }
+}
+
+impl ZeroizeOnDrop for PrivateKey {}
 
 impl fmt::Debug for PrivateKey {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -125,6 +135,9 @@ pub fn generate_key(seed: &[u8]) -> Result<(PublicKey, PrivateKey), Error> {
             public_key.0.as_mut_ptr().cast(),
         )
     };
+    // The RNG state is derived from the seed and could be used to recover the
+    // private key.
+    rng.opaque_contents.zeroize();
     check(ErrorKind::Keygen, r)?;
     Ok((public_key, private_key))
 }

@@ -4,8 +4,10 @@
 mod kats;
 
 use falcon_det_rs::det1024::*;
-use falcon_det_rs::{ErrorKind, ffi};
+use falcon_det_rs::ErrorKind;
 use rand::{Rng, RngCore};
+use sha3::Shake256;
+use sha3::digest::{ExtendableOutput, Update, XofReader};
 
 fn random_bytes(n: usize) -> Vec<u8> {
     let mut v = vec![0u8; n];
@@ -17,19 +19,12 @@ fn to_hex(b: &[u8]) -> String {
     b.iter().map(|x| format!("{x:02x}")).collect()
 }
 
-/// SHAKE256 of `input`, squeezed to `out_len` bytes, using the C library's
-/// implementation.
+/// SHAKE256 of `input`, squeezed to `out_len` bytes.
 fn shake256(input: &[u8], out_len: usize) -> Vec<u8> {
-    let mut sc = ffi::Shake256Context {
-        opaque_contents: [0; 26],
-    };
+    let mut hasher = Shake256::default();
+    hasher.update(input);
     let mut out = vec![0u8; out_len];
-    unsafe {
-        ffi::shake256_init(&mut sc);
-        ffi::shake256_inject(&mut sc, input.as_ptr().cast(), input.len());
-        ffi::shake256_flip(&mut sc);
-        ffi::shake256_extract(&mut sc, out.as_mut_ptr().cast(), out.len());
-    }
+    hasher.finalize_xof().read(&mut out);
     out
 }
 

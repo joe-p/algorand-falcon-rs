@@ -1,4 +1,4 @@
-/* Compile-time checks that the constants hard-coded in src/lib.rs and
+/* Compile-time checks that the constants hard-coded in src/det1024.rs and
  * src/ffi.rs match the C headers. */
 #include "deterministic.h"
 
