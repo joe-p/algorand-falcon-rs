@@ -4,6 +4,13 @@
 //! Each parameter set lives in its own module:
 //!
 //! - [`det1024`]: FALCON-DET1024 (n = 1024).
+//!
+//! The crate is `no_std` and only requires `alloc` (for
+//! [`det1024::CompressedSignature`]).
+
+#![no_std]
+
+extern crate alloc;
 
 use core::ffi::{c_int, c_void};
 use core::fmt;
@@ -73,7 +80,7 @@ impl fmt::Display for Error {
     }
 }
 
-impl std::error::Error for Error {}
+impl core::error::Error for Error {}
 
 pub(crate) fn check(kind: ErrorKind, r: c_int) -> Result<(), Error> {
     if r == 0 {

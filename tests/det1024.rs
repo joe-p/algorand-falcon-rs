@@ -3,8 +3,8 @@
 #[path = "kats/det1024.rs"]
 mod kats;
 
-use falcon_det::det1024::*;
-use falcon_det::ErrorKind;
+use algorand_falcon::det1024::*;
+use algorand_falcon::ErrorKind;
 use rand::{Rng, RngCore};
 use sha3::Shake256;
 use sha3::digest::{ExtendableOutput, Update, XofReader};
@@ -101,7 +101,7 @@ fn generate_keys_different_seed() {
     let (pub1, sk1) = generate_key(&seed).unwrap();
     let (pub2, sk2) = generate_key(&seed2).unwrap();
     assert_ne!(pub1, pub2);
-    assert_ne!(sk1, sk2);
+    assert_ne!(sk1.0, sk2.0);
 }
 
 #[test]
@@ -110,7 +110,7 @@ fn generate_key_is_deterministic() {
     let (pub1, sk1) = generate_key(&seed).unwrap();
     let (pub2, sk2) = generate_key(&seed).unwrap();
     assert_eq!(pub1, pub2);
-    assert_eq!(sk1, sk2);
+    assert_eq!(sk1.0, sk2.0);
 }
 
 #[test]

@@ -1,5 +1,7 @@
 //! FALCON-DET1024: deterministic Falcon with parameter n = 1024.
 
+use alloc::vec;
+use alloc::vec::Vec;
 use core::fmt;
 use core::ops::Deref;
 
@@ -29,7 +31,6 @@ pub const N: usize = 1 << LOGN;
 pub struct PublicKey(pub [u8; PUBLIC_KEY_SIZE]);
 
 /// A Falcon private key. Its bytes are zeroized when it is dropped.
-#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct PrivateKey(pub [u8; PRIVATE_KEY_SIZE]);
 
 /// A deterministic Falcon signature in compressed format, which is

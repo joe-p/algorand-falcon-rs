@@ -26,6 +26,16 @@ fn main() {
     build.include(dir).opt_level(3).warnings(false);
     // Match the cgo flags used by the Go bindings.
     build.flag_if_supported("-fomit-frame-pointer");
+    // The bindings always seed from caller-provided bytes, so disable the OS
+    // entropy sources (getentropy, /dev/urandom, CryptGenRandom). This keeps
+    // the C code free of OS dependencies for no_std targets.
+    for def in [
+        "FALCON_RAND_GETENTROPY",
+        "FALCON_RAND_URANDOM",
+        "FALCON_RAND_WIN32",
+    ] {
+        build.define(def, "0");
+    }
     for src in SOURCES {
         let path = dir.join(src);
         println!("cargo:rerun-if-changed={}", path.display());
