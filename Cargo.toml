@@ -2,6 +2,12 @@
 name = "algorand-falcon"
 version = "0.1.0"
 edition = "2024"
+description = "Rust bindings for deterministic Falcon-1024 post-quantum signatures"
+license = "MIT"
+repository = "https://github.com/joe-p/algorand-falcon-rs"
+readme = "README.md"
+keywords = ["falcon", "post-quantum", "signature", "algorand", "cryptography"]
+categories = ["cryptography"]
 
 [dependencies]
 zeroize = "1"
